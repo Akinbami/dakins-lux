@@ -18,6 +18,7 @@ app.use(express.json());
 // Configure CORS
 const allowedOrigins = [
   "https://dakins-lux-admin.vercel.app",
+  "https://dakins-lux-frontend.vercel.app",
   "http://localhost:5173",
   "http://localhost:5174",
 ];
