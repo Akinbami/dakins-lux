@@ -19,6 +19,7 @@ app.use(express.json());
 const allowedOrigins = [
   "https://dakins-lux-admin.vercel.app",
   "https://dakins-lux-frontend.vercel.app",
+  "https://api.paystack.co",
   "http://localhost:5173",
   "http://localhost:5174",
 ];
