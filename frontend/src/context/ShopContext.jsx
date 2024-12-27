@@ -15,6 +15,8 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [isCollectionLoading, setIsCollectionLoading] = useState(true);
+
   const navigate = useNavigate();
 
   const getCartCount = () => {
@@ -129,6 +131,8 @@ const ShopContextProvider = (props) => {
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setIsCollectionLoading(false);
     }
   };
 
@@ -180,6 +184,7 @@ const ShopContextProvider = (props) => {
     token,
     setToken,
     backend_url,
+    isCollectionLoading,
   };
 
   return (

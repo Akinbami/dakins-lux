@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Login");
@@ -9,10 +11,12 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { token, setToken, navigate, backend_url } = useContext(ShopContext);
+  const [processing, setProcessing] = useState(false);
 
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
+      setProcessing(true);
       let response;
       if (currentState === "Login") {
         response = await axios.post(`${backend_url}/user/login`, {
@@ -37,6 +41,8 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -102,8 +108,20 @@ const Login = () => {
           </p>
         )}
       </div>
-      <button className="bg-black text-white font-light px-8 py-2 mt-4">
-        {currentState === "Login" ? "Sign In" : "Sign Up"}
+      <button
+        className="bg-black text-white font-light px-8 py-2 mt-4"
+        disabled={processing}
+      >
+        {processing ? (
+          <>
+            <FontAwesomeIcon icon={faCircleNotch} spin className="mr-2" />
+            Processing...
+          </>
+        ) : currentState === "Login" ? (
+          "Sign In"
+        ) : (
+          "Sign Up"
+        )}
       </button>
     </form>
   );

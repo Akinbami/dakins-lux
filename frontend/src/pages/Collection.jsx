@@ -3,15 +3,16 @@ import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/frontend_assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
+import CollectionSkeleton from "../components/skeletons/CollectionSkeleton";
 
 const Collection = () => {
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch, isCollectionLoading } =
+    useContext(ShopContext);
   const [showFilters, setShowFilters] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubcategory] = useState([]);
   const [sortType, setSortType] = useState("relevant");
-  const [isLoading, setIsLoading] = useState(true);
 
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
@@ -179,20 +180,21 @@ const Collection = () => {
           </select>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6 ">
-          {isLoading && <div className="skeleton-placeholder"></div>}
-          {filteredProducts.map((item, index) => (
-            <ProductItem
-              id={item._id}
-              images={item.images}
-              name={item.name}
-              price={item.price}
-              key={index}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
-          ))}
-        </div>
+        {isCollectionLoading ? (
+          <CollectionSkeleton />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6 ">
+            {filteredProducts.map((item, index) => (
+              <ProductItem
+                id={item._id}
+                images={item.images}
+                name={item.name}
+                price={item.price}
+                key={index}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
